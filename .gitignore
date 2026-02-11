@@ -29,10 +29,7 @@ inventory-cli.exe
 dist/
 
 # Data files
-data/products.json
-*.json.tmp
-exported.json
-testdata/
+
 
 # Logs
 *.log

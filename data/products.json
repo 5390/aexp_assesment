@@ -1,0 +1,44 @@
+[
+  {
+    "id": "9f1b8c2e-6d4a-4c1b-9a2e-1a2b3c4d5e6f",
+    "name": "Laptop Pro",
+    "price": 1299.99,
+    "quantity": 15,
+    "category": "Electronics"
+  },
+  {
+    "id": "2a3b4c5d-6e7f-4812-9abc-0def12345678",
+    "name": "Wireless Mouse",
+    "price": 29.99,
+    "quantity": 120,
+    "category": "Peripherals"
+  },
+  {
+    "id": "3c4d5e6f-7a8b-49c0-9def-112233445566",
+    "name": "Mechanical Keyboard",
+    "price": 89.5,
+    "quantity": 60,
+    "category": "Peripherals"
+  },
+  {
+    "id": "4d5e6f70-8b9c-40d1-0abc-223344556677",
+    "name": "Office Chair",
+    "price": 199.0,
+    "quantity": 20,
+    "category": "Furniture"
+  },
+  {
+    "id": "5e6f7081-9c0d-4e22-1bcd-334455667788",
+    "name": "Standing Desk",
+    "price": 349.99,
+    "quantity": 10,
+    "category": "Furniture"
+  },
+  {
+    "id": "6f708192-ad1e-4f33-2cde-445566778899",
+    "name": "Bluetooth Speaker",
+    "price": 59.99,
+    "quantity": 75,
+    "category": "Electronics"
+  }
+]
