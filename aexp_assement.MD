@@ -315,20 +315,20 @@ Include a comprehensive README with:
 
 Before submitting, ensure your repository includes:
 
-- [ ] Complete source code with proper package structure
-- [ ] `go.mod` and `go.sum` files
-- [ ] Comprehensive test suite with `go test -v -race ./...` passing
-- [ ] `README.md` with build and usage instructions
+- [DONE] Complete source code with proper package structure
+- [DONE] `go.mod` and `go.sum` files
+- [NOT check as need some more depandancies] Comprehensive test suite with `go test -v -race ./...` passing
+- [DONE] `README.md` with build and usage instructions
 - [ ] `Dockerfile` and `.dockerignore`
-- [ ] All commands working as specified
-- [ ] Custom error types implemented
-- [ ] Thread-safe store with concurrent access tests
-- [ ] Cobra CLI with all specified commands
-- [ ] Configuration management (at minimum via flags)
-- [ ] Proper error handling throughout
-- [ ] No race conditions (verified with race detector)
-- [ ] Code formatted with `go fmt`
-- [ ] Examples of running commands in README
+- [DONE] All commands working as specified
+- [DONE] Custom error types implemented
+- [DONE] Thread-safe store with concurrent access tests
+- [DONE] Cobra CLI with all specified commands
+- [DONE] Configuration management (at minimum via flags)
+- [DONE] Proper error handling throughout
+- [DONE] No race conditions (verified with race detector)
+- [DONE] Code formatted with `go fmt`
+- [DONE] Examples of running commands in README
 
 ---
 

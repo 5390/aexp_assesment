@@ -1,37 +1,5 @@
 # Project Structure for inventory-cli
 
-## Directory Layout
-
-```
-aexp_assesment/
-├── cmd/
-│   └── inventory/
-│       └── main.go                      # Application entry point
-├── cli/
-│   └── commands.go                      # Cobra CLI commands and interactive shell
-├── domain/
-│   ├── product.go                       # Product struct, ListFilter, ProductStore interface
-│   ├── error.go                         # Custom error types
-│   └── error_test.go                    # Error type unit tests
-├── store/
-│   ├── factory.go                       # NewStore(kind, path) factory for DI
-│   ├── memory.go                        # InMemoryStore with sync.RWMutex
-│   ├── memory_test.go                   # InMemoryStore unit + concurrency tests
-│   ├── file.go                          # FileStore with JSON persistence
-│   └── file_test.go                     # FileStore tests
-├── util/
-│   └── uuid.go                          # GenerateUUID() RFC4122 v4 helper
-├── data/
-│   └── products.json                    # Sample product data
-├── testdata/
-│   └── (test output files)
-├── .gitignore                           # Git ignore rules
-├── README.md                            # Project documentation
-├── go.mod                               # Go module definition
-├── go.sum                               # Dependency checksums
-└── Makefile                             # Build and test targets
-```
-
 ## Package Organization
 
 ### `domain/` - Core Business Logic

@@ -14,22 +14,22 @@ This project is a small CLI application in Go for managing a product inventory. 
 
 ```
 aexp_assesment/
-├── cmd/inventory/          # Application entry point (main.go)
-├── cli/                    # CLI commands & interactive shell (commands.go)
-├── domain/                 # Core types & business logic
-│   ├── product.go         # Product struct, ListFilter, ProductStore interface
-│   ├── error.go           # Custom error types
-│   └── error_test.go      # Error type tests
-├── store/                 # Store implementations
-│   ├── factory.go         # NewStore() factory for DI
-│   ├── memory.go          # InMemoryStore (thread-safe with RWMutex)
-│   ├── memory_test.go     # InMemoryStore tests
-│   ├── file.go            # FileStore (JSON persistence)
-│   └── file_test.go       # FileStore tests
-├── util/                  # Utilities
-│   └── uuid.go            # UUID v4 generation
-├── data/products.json     # Sample product data
-└── go.mod, go.sum, etc.   # Build configuration & dependencies
+    cmd/inventory/              # Application entry point (main.go)
+    cli/                        # CLI commands & interactive shell (commands.go)
+    domain/                     # Core types & business logic
+        product.go              # Product struct, ListFilter, ProductStore interface
+        error.go                # Custom error types
+        error_test.go           # Error type tests
+    store/                      # Store implementations
+        factory.go              # NewStore() factory for DI
+        memory.go               # InMemoryStore (thread-safe with RWMutex)
+        memory_test.go          # InMemoryStore tests
+        file.go                 # FileStore (JSON persistence)
+        file_test.go            # FileStore tests
+    util/                       # Utilities
+        uuid.go                 # UUID v4 generation
+    data/products.json          # Sample product data
+    go.mod, go.sum, etc.        # Build configuration & dependencies
 ```
 
 ## Package Organization

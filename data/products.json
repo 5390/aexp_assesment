@@ -40,5 +40,12 @@
     "price": 59.99,
     "quantity": 75,
     "category": "Electronics"
+  },
+  {
+    "id": "6f708192-ad1e-4f33-2cde-445566778899",
+    "name": "Bluetooth Speaker",
+    "price": 59.99,
+    "quantity": 75,
+    "category": "Electronics"
   }
 ]

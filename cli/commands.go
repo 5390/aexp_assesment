@@ -15,12 +15,15 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log/slog"
 	"os"
+	"time"
 
 	"bufio"
 	"strings"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var (
@@ -35,8 +38,35 @@ var (
 			if productStore != nil {
 				return nil
 			}
-			kind, _ := cmd.Flags().GetString("store")
-			path, _ := cmd.Flags().GetString("store-file")
+
+			// If a config file was provided, read it. Viper bindings for flags
+			// and env vars are set in init(), so values follow precedence:
+			// flags > env vars > config file > defaults.
+			cfg := viper.GetString("config")
+			if cfg != "" {
+				viper.SetConfigFile(cfg)
+				if err := viper.ReadInConfig(); err != nil {
+					return err
+				}
+			}
+
+			kind := viper.GetString("store")
+			path := viper.GetString("store-file")
+			// configure logging
+			lvlStr := viper.GetString("log-level")
+			var lvl slog.Level
+			switch strings.ToLower(lvlStr) {
+			case "debug":
+				lvl = slog.LevelDebug
+			case "warn", "warning":
+				lvl = slog.LevelWarn
+			case "error":
+				lvl = slog.LevelError
+			default:
+				lvl = slog.LevelInfo
+			}
+			handler := slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{Level: lvl})
+			slog.SetDefault(slog.New(handler))
 			var err error
 			productStore, err = store.NewStore(kind, path)
 			return err
@@ -93,6 +123,16 @@ func init() {
 
 	rootCmd.PersistentFlags().String("store", "memory", "store backend: memory|file")
 	rootCmd.PersistentFlags().String("store-file", "data/products.json", "file path for file store")
+	rootCmd.PersistentFlags().String("config", "", "config file (yaml|json)")
+	rootCmd.PersistentFlags().String("log-level", "info", "log level: debug|info|warn|error")
+
+	// Viper bindings: bind persistent flags and environment variables.
+	viper.BindPFlag("store", rootCmd.PersistentFlags().Lookup("store"))
+	viper.BindPFlag("store-file", rootCmd.PersistentFlags().Lookup("store-file"))
+	viper.BindPFlag("config", rootCmd.PersistentFlags().Lookup("config"))
+	viper.BindPFlag("log-level", rootCmd.PersistentFlags().Lookup("log-level"))
+	viper.SetEnvPrefix("INVENTORY")
+	viper.AutomaticEnv()
 
 	// create
 	// createCmd creates a new Product with a generated UUID and validates
@@ -110,9 +150,13 @@ func init() {
 			}
 			id := util.GenerateUUID()
 			p := domain.Product{ID: id, Name: name, Price: price, Quantity: quantity, Category: category}
+			start := time.Now()
 			if err := productStore.Create(context.Background(), p); err != nil {
+				slog.Error("create failed", "error", err, "operation", "create", "product_id", id)
 				return err
 			}
+			dur := time.Since(start)
+			slog.Info("product created", "operation", "create", "product_id", id, "duration_ms", dur.Milliseconds())
 			b, _ := json.MarshalIndent(p, "", "  ")
 			fmt.Println(string(b))
 			return nil
@@ -220,9 +264,13 @@ func init() {
 			if cmd.Flags().Changed("category") {
 				p.Category = uCategory
 			}
+			start := time.Now()
 			if err := productStore.Update(context.Background(), id, p); err != nil {
+				slog.Error("update failed", "error", err, "operation", "update", "product_id", id)
 				return err
 			}
+			dur := time.Since(start)
+			slog.Info("product updated", "operation", "update", "product_id", id, "duration_ms", dur.Milliseconds())
 			b, _ := json.MarshalIndent(p, "", "  ")
 			fmt.Println(string(b))
 			return nil
@@ -253,9 +301,13 @@ func init() {
 					return nil
 				}
 			}
+			start := time.Now()
 			if err := productStore.Delete(context.Background(), id); err != nil {
+				slog.Error("delete failed", "error", err, "operation", "delete", "product_id", id)
 				return err
 			}
+			dur := time.Since(start)
+			slog.Info("product deleted", "operation", "delete", "product_id", id, "duration_ms", dur.Milliseconds())
 			fmt.Println("deleted")
 			return nil
 		},

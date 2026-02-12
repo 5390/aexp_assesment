@@ -24,9 +24,9 @@ func (e *ProductNotFoundError) Is(target error) bool {
 
 // InvalidProductError is returned when product validation fails
 type InvalidProductError struct {
-	Field   string
-	Reason  string
-	Value   interface{}
+	Field  string
+	Reason string
+	Value  interface{}
 }
 
 // Error implements the error interface for InvalidProductError
