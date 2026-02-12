@@ -30,3 +30,31 @@ type ProductStore interface {
 	List(ctx context.Context, filter ListFilter) ([]Product, error)
 	BulkImport(ctx context.Context, products []Product) error
 }
+
+func ValidateProduct(p Product) error {
+	if p.Name == "" {
+		return NewInvalidProductError(
+			"name",
+			"name cannot be empty",
+			p.Name,
+		)
+	}
+
+	if p.Price < 0 {
+		return NewInvalidProductError(
+			"price",
+			"price must be non-negative",
+			p.Price,
+		)
+	}
+
+	if p.Quantity < 0 {
+		return NewInvalidProductError(
+			"quantity",
+			"quantity must be non-negative",
+			p.Quantity,
+		)
+	}
+
+	return nil
+}
