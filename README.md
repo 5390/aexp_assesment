@@ -175,7 +175,7 @@ Export filtered products to a file:
 go run ./cmd/inventory --store file --store-file data/products.json export --file exported.json --category Electronics
 ```
 
-### 8) Shell (REPL)
+### 8) Shell
 
 Start an interactive prompt to run multiple commands without restarting:
 
