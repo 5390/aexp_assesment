@@ -1,0 +1,16 @@
+bin
+out
+coverage.out
+coverage.html
+.git
+.idea
+.vscode
+*.exe
+*.exe~
+*.log
+*.tmp
+vendor/
+node_modules/
+*.DS_Store
+*.swp
+*.md
