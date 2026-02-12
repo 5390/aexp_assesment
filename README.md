@@ -237,8 +237,6 @@ Note: I have not run the race detector locally because it requires enabling CGO 
 ## Next Steps (Optional)
 ---
 - Add a Dockerfile (multi-stage) for building a small runtime image.
-- Improve REPL argument parsing to handle quoted strings.
-- Add more robust file-store locking for multi-process access (e.g., file lock).
 - Add more CLI tests using mocked `ProductStore` implementations.
 
 ## Contact
