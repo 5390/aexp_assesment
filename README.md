@@ -14,21 +14,26 @@ This project is a small CLI application in Go for managing a product inventory. 
 
 ```
 aexp_assesment/
-    cmd/inventory/              # Application entry point (main.go)
-    cli/                        # CLI commands & interactive shell (commands.go)
+    cmd/inventory/              # Application entry point and binary tests
+        main.go
+        main_test.go
+    cli/                        # Cobra CLI handlers & interactive REPL
+        commands.go              # Cobra command definitions and wiring
+        commands_test.go         # CLI tests (integration-style)
+        error_paths_test.go      # CLI error-path tests
     domain/                     # Core types & business logic
-        product.go              # Product struct, ListFilter, ProductStore interface
-        error.go                # Custom error types
-        error_test.go           # Error type tests
+        product.go               # Product struct, ListFilter, ProductStore interface
+        error.go                 # Custom error types
+        error_test.go            # Error type tests
     store/                      # Store implementations
-        factory.go              # NewStore() factory for DI
-        memory.go               # InMemoryStore (thread-safe with RWMutex)
-        memory_test.go          # InMemoryStore tests
-        file.go                 # FileStore (JSON persistence)
-        file_test.go            # FileStore tests
+        factory.go               # NewStore() factory for DI
+        memory.go                # InMemoryStore (thread-safe with RWMutex)
+        memory_test.go           # InMemoryStore tests
+        file.go                  # FileStore (JSON persistence)
+        file_test.go             # FileStore tests
     util/                       # Utilities
-        uuid.go                 # UUID v4 generation
-    data/products.json          # Sample product data
+        uuid.go                  # UUID v4 generation
+    data/products.json          # Sample product data (included in Docker context)
     go.mod, go.sum, etc.        # Build configuration & dependencies
 ```
 
@@ -95,6 +100,15 @@ Global persistent flags (available before subcommand):
 
 - `--store` — `memory` (default) or `file`
 - `--store-file` — path for JSON file store (default `data/products.json`)
+- `--config` — optional config file (yaml|json) (Viper reads this file)
+- `--log-level` — logging level: `debug|info|warn|error` (default `info`)
+
+Environment variables (Viper reads these with prefix `INVENTORY`):
+
+- `INVENTORY_STORE` — backend selection (`memory`|`file`)
+- `INVENTORY_STORE_FILE` — path for JSON file store
+- `INVENTORY_CONFIG` — path to config file
+- `INVENTORY_LOG_LEVEL` — logging level
 
 ## Commands and Usage
 
@@ -169,10 +183,13 @@ Start an interactive prompt to run multiple commands without restarting:
 go run ./cmd/inventory shell
 # then inside prompt:
 # inventory> create --name "Desk" --price 49.99 --quantity 5 --category Office
+# inventory> get <product-id>
+# inventory> update <product-id> --price 59.99 --quantity 10
+# inventory> delete --force <product-id>
 # inventory> list
-# inventory> exit
 # inventory> import --file data/products.json
 # inventory> export --file exported.json
+# inventory> exit
 ```
 
 ## Sample Data
@@ -190,8 +207,10 @@ go test ./...
 Run benchmarks:
 
 ```bash
-go test -bench . -run '^$'
+go test ./... -bench . -run '^$'
 ```
+
+Current test coverage: approximately 74.6% (target >= 80%).
 
 **Race detector note:**
 The Go race detector on Windows requires CGO (a C compiler) to be enabled. Options:
@@ -205,6 +224,8 @@ go test -race ./...
 ```
 
 - Or run tests from WSL/Linux (recommended on Windows). If you cannot enable CGO locally, run tests without `-race`.
+
+Note: I have not run the race detector locally because it requires enabling CGO and a C compiler (e.g., `gcc`) on Windows; see commands above to enable if you have a C toolchain available.
 
 ## Design Notes & Trade-offs
 ---
